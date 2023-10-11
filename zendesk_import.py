@@ -4,7 +4,7 @@ import pymysql
 import json
 from sshtunnel import SSHTunnelForwarder
 
-creds = json.load(open('creds.json.bak', 'r'))
+creds = json.load(open('creds.json', 'r'))
 
 server = SSHTunnelForwarder(
     (creds['ssh_host'], 22),
