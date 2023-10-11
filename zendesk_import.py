@@ -4,7 +4,7 @@ import pymysql
 import json
 from sshtunnel import SSHTunnelForwarder
 
-creds = json.load(open('creds.json', 'r'))
+creds = json.load(open('creds.json.bak', 'r'))
 
 server = SSHTunnelForwarder(
     (creds['ssh_host'], 22),
@@ -24,19 +24,22 @@ def run_query():
     host="localhost",
     port=10022,
     database=creds['database'],
-    cursorclass=pymysql.cursors.DictCursor) 
+    cursorclass=pymysql.cursors.DictCursor
+    ) 
 	
     query = [
         "SET @startDate = '2023-05-22';",
         "SET @endDate = '2023-10-11';"
     ]
     
+    results = []
+    
     with cnx:
         with cnx.cursor() as cursor:
             for i in query:
                 cursor.execute(cursor.mogrify(i))
-                results = cursor.fetchall()
-                print(results)
+                results.append(cursor.fetchall())
+    print(results)
 
 def main():
     server.start()
